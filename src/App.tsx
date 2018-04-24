@@ -77,11 +77,16 @@ class App extends React.Component<IProps, IState> {
   private renderElement(ele: DocElement, Parent: string = 'div'): JSX.Element {
     const EleTag = ele.element || 'div';
     let text = ele.text;
+    let rendered = null;
     const preprocess = ele.preprocess || null;
 
     if (preprocess === 'markdown') {
       // TODO import and use a markdown renderer...
-      text = 'markdown:' + text;
+      // text = 'markdown:' + text;
+
+      const parsed = this.manualMarkdownLinkParser(text);
+      text = parsed[0];
+      rendered = parsed[1];
     } else if (preprocess === null) {
       // Do nothing extra
     } else {
@@ -99,6 +104,7 @@ class App extends React.Component<IProps, IState> {
       <Parent className={cls}>
         <EleTag>
           {text}
+          {rendered}
         </EleTag>
       </Parent>
     );
@@ -125,6 +131,16 @@ class App extends React.Component<IProps, IState> {
 
     // return output;
   }
+  private manualMarkdownLinkParser(text: string) : [string, JSX.Element|null] {
+    // text = text.replace(/\[(.+?)\]\((.+?)\)/g, "<a href=\"$2\">$1</a>");
+    const matches = /(^.*?)\[(.+?)\]\((.+?)\)(.*?$)/g.exec(text);
+    if (matches) {
+      const component = (<span>{matches[1]}<a href={matches[3]}>{matches[2]}</a>{matches[4]}</span>)
+      return ['', component];
+    }
+
+    return ['TODO markdown:' + text, null];
+  }
   private renderItemsParagraph(items: DocElement[]): JSX.Element {
     const renderedItems = items.map(x => this.renderElement(x));
 
@@ -146,7 +162,9 @@ class App extends React.Component<IProps, IState> {
   private renderWorkHistory(history: IWorkHistory[]): JSX.Element | null {
     // throw new Error("Method not implemented.");
     // TODO build this
-    return null;
+    return (history && history.length > 0)
+              ? <div>TODO need to implement the renderWorkHistory method, see <a href='/data/resumeData.json'>/data/resumeData.json?</a></div>
+              : null;
   }
 }
 
