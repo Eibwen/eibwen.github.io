@@ -1,0 +1,17 @@
+[
+  {
+    "title": elementObject,
+    "type": ["work-history", null], /*does that work with jsonschema, could get rid of jsonschema and only use typescript*/
+    "noPrint": boolean,
+    "style": [paragraphs, bullets],
+    "note": string,
+    "items": [
+      string,
+      string,
+      object: { "element", "text", "cssClass", "preprocess": "markdown" }
+    ],
+    "children": [
+      "section title": "##ref##"
+    ]
+  }
+]
