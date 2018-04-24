@@ -1,34 +1,11 @@
-/* .App {
-  text-align: center;
+@media only screen and (min-width: 800px) {
+  body, .root {
+    padding: 2em 6em;
+  }
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
-}
-
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
-}
-
-.App-title {
-  font-size: 1.5em;
-}
-
-.App-intro {
-  font-size: large;
-}
-
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-} */
 
 body, .root {
-  padding: 2em 6em;
   color: #999;
   background-color: #333;
 }
@@ -42,7 +19,7 @@ h1, h2, h3, h4 {
   line-height: 1em;
   color: #bbb;
 
-  border: solid 1px #666;
+  border: solid 1px #444;
   border-top: none;
   border-radius: 3px;
   padding: 0 .5em;
@@ -55,6 +32,10 @@ h2, h3, h4 {
   border-left: none;
 }
 
+.paragraph > div {
+  padding: .25em 0;
+}
+
 a {
   color: #ccc;
   font-weight: bold;
@@ -62,4 +43,16 @@ a {
 }
 a:hover {
   text-decoration: underline;
+}
+
+
+@media print {
+  body, .root {
+    color: #000;
+  }
+
+  a::after {
+    content: ": "attr(href)"";
+    font-weight: normal;
+  }
 }
