@@ -47,12 +47,39 @@ a:hover {
 
 
 @media print {
+  .no-print {
+    display: none;
+  }
+
   body, .root {
-    color: #000;
+    /* Better text color for printing */
+    color: #444;
+    background-color: #fff;
+  }
+
+  a, h1, h2, h3 {
+    color: #222;
+  }
+  h4 {
+    color: #666;
+  }
+
+  h2, h3, h4, ul {
+    /* Tighten up, want fewest pages possible */
+    margin-top: .25em;
+    margin-bottom: .25em;
   }
 
   a::after {
     content: ": "attr(href)"";
     font-weight: normal;
   }
+
+  .greg-walker > h1::after {
+    /* obfusticate this */
+    content: " gre""g.i""su""+ghr""\0040""gm""ai""l.c""om";
+    font-size: .5em;
+    font-weight: normal;
+  }
 }
+

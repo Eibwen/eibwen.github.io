@@ -4,7 +4,7 @@
     "style": "paragraph",
     "items": [
       { "element": "h4", "text": "Software Engineer with 10+ years of varied experience, knowledgable about many data stores, strong documentation and collaboration/mentoring skills.  Full stack with a focus on back-end." },
-      "(I'm mostly borrowing the structure of my hired.com profile here, but this will likely be the source-of-truth entry point)",
+      { "noPrint": true, "text": "(I'm mostly borrowing the structure of my hired.com profile here, but this will likely be the source-of-truth entry point)" },
       "I'm open to any programming language, I've been happy with C# (it being the primary language for all my career so far), and it is in an exciting place in its evolution, but being tied to any technology too closely is never a good thing.  I have worked most on building out and maintaining my general programming skills, being a technical lead for most of my time at uShip."
     ]
   },
@@ -33,8 +33,8 @@
     "note": "TODO reword this whole section to make it more coherant, spell check",
     "items": [
       "I'm always looking for a position that will challenge me significantly, help me grow as a developer and a person.  ",
-      "Learning is one of the most important things, and a very collaborative environment is the best way I've seen to achieve that by far.  Both my own learning, and being able to help teach and mentor less experienced developers.  ",
-      "I have also often enjoy the puzzle solving aspect of software development, there are very few problems I've encountered that I have not been able to find a solution for that achieves the intended goals, and often have been complimented about coming up with unique solutions that are quicker to implement than the straightforward one, whilst still being sustainable and reliable.",
+      "Learning is one of the most important things, and a very collaborative environment is one of the best way I've seen to achieve that.  Both my own learning, and being able to help teach and mentor peers.  ",
+      "I enjoy the puzzle solving aspect of software development, there are very few problems I've encountered that I have not been able to find a solution for that achieves the intended goals, and often have been complimented about coming up with unique solutions that are quicker to implement than the straightforward one, whilst still being sustainable and reliable.",
       "I've noticed I derive the most pleasure from my job when I can see progress, either in a project itself, in the development of my own skills, or in the development of the skills of my fellow developers.  Move fast whilst having things setup so that breaking things is unlikely."
     ]
   },
@@ -60,9 +60,9 @@
     "style": "bullets",
     "items": [
       "High level of C#/.Net experience",
-      "Good Javascript experience, along with node.js",
+      "Good amount of Javascript experience, along with node.js",
       "Interested in using more golang (especially professional experience using it)",
-      "Good Java and Android expereince"
+      "Good amount of Java and Android expereince"
     ]
   },
   {
@@ -105,6 +105,7 @@
   },
   {
     "title": { "text": "Recommendations", "element": "h3" },
+    "noPrint": true,
     "style": "paragraph",
     "items": [
       { "preprocess": "markdown", "text": "[Link](recommendations)" }

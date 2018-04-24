@@ -3,6 +3,7 @@ import { IWorkHistory } from './workHistory'
 
 interface ISectionTransform {
   title: IDocElement | string;
+  noPrint: boolean;
   style: string;
   items: Array<IDocElement | string>;
   positions: IWorkHistory[];
@@ -16,6 +17,7 @@ const SECTION_PARSE = (data: ISectionTransform): Section => {
   const output = {} as Section
 
   output.title = new DocElement(data.title);
+  output.noPrint = data.noPrint || false;
   output.style = data.style;
   output.items = data.items
                 ? data.items.map(x => new DocElement(x))

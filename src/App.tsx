@@ -58,6 +58,7 @@ class App extends React.Component<IProps, IState> {
     );
   }
   private buildSection(section: Section): JSX.Element {
+    const noPrint = section.noPrint;
     const style = section.style || 'paragraph';
     const items = section.items || [];
     const positions = section.positions || [];
@@ -67,7 +68,7 @@ class App extends React.Component<IProps, IState> {
       : this.renderItemsBullets(items);
 
     return (
-      <div>
+      <div className={noPrint ? "no-print" : undefined}>
         {this.renderElement(section.title)}
         {itemsElements}
         {this.renderWorkHistory(positions)}
@@ -94,14 +95,18 @@ class App extends React.Component<IProps, IState> {
       throw new Error('Unrecognized preprocess type: ' + preprocess);
     }
 
-    const clsName = ele.className ? ele.className + ' ' : '';
-    const cls = clsName + text.replace(/ /g, '-')
+    // const clsName = ele.className ? ele.className + ' ' : '';
+    const slugified = text.replace(/ /g, '-')
                     .replace(/[^\w-]/g, '')
                     .toLowerCase()
                     .substring(0, 50);
+    const classArray = [ele.className, slugified];
+    if (ele.noPrint) {
+      classArray.push("no-print");
+    }
 
     return (
-      <Parent className={cls}>
+      <Parent className={classArray.filter(x => x).join(" ")}>
         <EleTag>
           {text}
           {rendered}
