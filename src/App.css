@@ -31,6 +31,10 @@ h2, h3, h4 {
   margin-top: 1em;
   border-left: none;
 }
+ul {
+  padding-left: 1.5em;
+  list-style-type: circle;
+}
 
 .paragraph > div {
   padding: .25em 0;

@@ -5,8 +5,6 @@ import resumeData from './data/resumeData.json';
 import { DocElement, Section } from './models/section'
 import { IWorkHistory } from './models/workHistory'
 
-import logo from './logo.svg';
-
 /* tslint:disable-next-line:no-empty-interface */
 interface IProps {
 }
@@ -34,14 +32,6 @@ class App extends React.Component<IProps, IState> {
         {this.buildSections()}
 
 
-
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
       </div>
     );
   }
