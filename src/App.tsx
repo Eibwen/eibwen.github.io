@@ -2,7 +2,7 @@ import * as React from 'react';
 import './App.css';
 import { process } from './data-processor';
 import resumeData from './data/resumeData.json';
-import { DocElement, Section } from './models/section'
+import { DocElement, IDocElement, Section } from './models/section'
 import { IWorkHistory } from './models/workHistory'
 
 /* tslint:disable-next-line:no-empty-interface */
@@ -65,7 +65,7 @@ class App extends React.Component<IProps, IState> {
       </div>
     );
   }
-  private renderElement(ele: DocElement, Parent: string = 'div'): JSX.Element {
+  private renderElement(ele: IDocElement, Parent: string = 'div'): JSX.Element {
     const EleTag = ele.element;
     const text = ele.text;
     let rendered = null;
@@ -117,7 +117,10 @@ class App extends React.Component<IProps, IState> {
     }
     return component;
   }
-  private renderItemsParagraph(items: DocElement[]): JSX.Element {
+  private renderItemsParagraph(items: DocElement[]): JSX.Element | null {
+    if (!items || items.length === 0) {
+      return null;
+    }
     const renderedItems = items.map(x => this.renderElement(x));
 
     return (
@@ -135,12 +138,54 @@ class App extends React.Component<IProps, IState> {
       </ul>
     );
   }
-  private renderWorkHistory(history: IWorkHistory[]): JSX.Element | null {
-    // throw new Error("Method not implemented.");
-    // TODO build this
-    return (history && history.length > 0)
-              ? <div>TODO need to implement the renderWorkHistory method, see <a href='/data/resumeData.json'>/data/resumeData.json?</a></div>
-              : null;
+  private renderWorkHistory(history: IWorkHistory[]): JSX.Element[] | null {
+    if (!history || history.length === 0) {
+      return null;
+    }
+
+    // TODO do I want the company names even larger?
+    const workHistoryComponents = history.map(x => (
+      <div>
+        <h4>{x.name} {this.buildLocation(x)} {this.buildTenure(x)}</h4>
+        <div className='job-position'>{x.position}</div>
+        {this.buildJobDescription(x)}
+      </div>
+    ));
+
+    return workHistoryComponents;
+  }
+  private buildLocation(x: IWorkHistory) : JSX.Element {
+    return (<span className='minor-detail job-location'>{x.location}</span>);
+  }
+  private buildTenure(x: IWorkHistory) : JSX.Element {
+    
+    const startDate = new Date(x.start);
+    const endDate = x.end ? new Date(x.end) : new Date();
+    const msWorkingThere = endDate.getTime() - startDate.valueOf();
+
+    return (
+      <span className='minor-detail tenure' title={this.humanizeYearsMonths(msWorkingThere)}>{x.start} - {x.end}</span>
+    );
+  }
+  private buildJobDescription(history: IWorkHistory) : JSX.Element[] {
+    const items = history.description;
+    if (!items || items.length === 0) {
+      return [];
+    }
+    return items.map(x => this.renderElement(new DocElement(x)));
+  }
+  private humanizeYearsMonths(msTimespan: number) : string {
+    const dayInMs = 24 * 60 *60 * 1000;
+    const monthInMs = dayInMs * 30;
+    const yearInMs = dayInMs * 365.25;
+
+    const years = Math.floor(msTimespan / yearInMs);
+    const monthsRaw = (msTimespan % yearInMs) / monthInMs;
+    // Basically going to assume inclusive range... and only adding .25 instead of .5, idk
+    //  TODO unit test to figure out if this is the behavior we want
+    const months = Math.ceil(monthsRaw + 0.25);
+
+    return years + " yrs " + months + " mos";
   }
 }
 

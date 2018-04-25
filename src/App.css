@@ -19,10 +19,13 @@ h1, h2, h3, h4 {
   line-height: 1em;
   color: #bbb;
 
+  padding: 0 1em;
+  margin-left: -0.5em;
+}
+h1, h2, h3 {
   border: solid 1px #444;
   border-top: none;
   border-radius: 3px;
-  padding: 0 .5em;
 }
 h1 {
   padding-left: .2em;
@@ -47,6 +50,20 @@ a {
 }
 a:hover {
   text-decoration: underline;
+}
+
+.minor-detail {
+  font-size: .75em;
+  font-weight: normal;
+}
+.job-location::before {
+  content: "(";
+}
+.job-location::after {
+  content: ")";
+}
+.tenure {
+  font-style: italic;
 }
 
 
@@ -84,6 +101,14 @@ a:hover {
     content: " gre""g.i""su""+ghr""\0040""gm""ai""l.c""om";
     font-size: .5em;
     font-weight: normal;
+  }
+
+  .tenure::before {
+    font-style: normal;
+    content: attr(title)" (";
+  }
+  .tenure::after {
+    content: ")"
   }
 }
 
