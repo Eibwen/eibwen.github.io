@@ -66,75 +66,56 @@ class App extends React.Component<IProps, IState> {
     );
   }
   private renderElement(ele: DocElement, Parent: string = 'div'): JSX.Element {
-    const EleTag = ele.element || 'div';
-    let text = ele.text;
+    const EleTag = ele.element;
+    const text = ele.text;
     let rendered = null;
     const preprocess = ele.preprocess || null;
+
+    const wrapInParent = (child: JSX.Element | string) => {
+      // const clsName = ele.className ? ele.className + ' ' : '';
+      const slugified = text.replace(/ /g, '-')
+                            .replace(/[^\w-]/g, '')
+                            .toLowerCase()
+                            .substring(0, 50);
+      const classArray = [ele.className, slugified];
+      if (ele.noPrint) {
+        classArray.push("no-print");
+      }
+
+      return (
+        <Parent className={classArray.filter(x => x).join(" ")}>
+          {child}
+        </Parent>
+      );
+    };
 
     if (preprocess === 'markdown') {
       // TODO import and use a markdown renderer...
       // text = 'markdown:' + text;
 
-      const parsed = this.manualMarkdownLinkParser(text);
-      text = parsed[0];
-      rendered = parsed[1];
+      const markdown = this.replaceMarkdownLinksWithComponents(text, EleTag || 'span') as JSX.Element;
+      rendered = wrapInParent(markdown);
     } else if (preprocess === null) {
       // Do nothing extra
+      rendered = (EleTag ? wrapInParent(<EleTag>{text}</EleTag>) : wrapInParent(text));
     } else {
       // default case, of unrecognized
       throw new Error('Unrecognized preprocess type: ' + preprocess);
     }
 
-    // const clsName = ele.className ? ele.className + ' ' : '';
-    const slugified = text.replace(/ /g, '-')
-                    .replace(/[^\w-]/g, '')
-                    .toLowerCase()
-                    .substring(0, 50);
-    const classArray = [ele.className, slugified];
-    if (ele.noPrint) {
-      classArray.push("no-print");
-    }
-
-    return (
-      <Parent className={classArray.filter(x => x).join(" ")}>
-        <EleTag>
-          {text}
-          {rendered}
-        </EleTag>
-      </Parent>
-    );
-
-    // //TODO is this really how to do this??? Need to find dynamic creation
-    // switch (eleTag) {
-    //   case null:
-    //     break;
-    //   case 'h1':
-    //     text = <h1>{text}</h1>;
-    // }
-
-    // var output = null;
-    // switch (parent) {
-    //   case 'div':
-    //     output = <div>{text}</div>;
-    //     break;
-    //   case 'li':
-    //     output = <li>{text}</li>;
-    //     break;
-    //   default:
-    //     throw new Error('Unknown parent element: ' + parent);
-    // }
-
-    // return output;
+    return rendered;
   }
-  private manualMarkdownLinkParser(text: string) : [string, JSX.Element|null] {
-    // text = text.replace(/\[(.+?)\]\((.+?)\)/g, "<a href=\"$2\">$1</a>");
-    const matches = /(^.*?)\[(.+?)\]\((.+?)\)(.*?$)/g.exec(text);
-    if (matches) {
-      const component = (<span>{matches[1]}<a href={matches[3]}>{matches[2]}</a>{matches[4]}</span>)
-      return ['', component];
+  private replaceMarkdownLinksWithComponents(text: string, EleTag: string) : JSX.Element | null {
+    if (!text) {
+      return null;
     }
+    const matches = /(^.*?)\[(.+?)\]\((.+?)\)(.*?$)/g.exec(text);
+    let component = (<EleTag>{text}</EleTag>);
 
-    return ['TODO markdown:' + text, null];
+    if (matches) {
+      component = (<EleTag>{matches[1]}<a href={matches[3]}>{matches[2]}</a>{this.replaceMarkdownLinksWithComponents(matches[4], 'span')}</EleTag>);
+    }
+    return component;
   }
   private renderItemsParagraph(items: DocElement[]): JSX.Element {
     const renderedItems = items.map(x => this.renderElement(x));
