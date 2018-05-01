@@ -8,6 +8,8 @@
 body, .root {
   color: #999;
   background-color: #333;
+  max-width: 60rem;
+  margin: auto;
 }
 .section {
   padding: .5em;
@@ -26,9 +28,6 @@ h1, h2, h3 {
   border: solid 1px #444;
   border-top: none;
   border-radius: 3px;
-}
-h1 {
-  padding-left: .2em;
 }
 h2, h3, h4 {
   margin-top: 1em;
@@ -64,6 +63,26 @@ a:hover {
 }
 .tenure {
   font-style: italic;
+}
+
+
+@media (min-width: 800px) {
+  h1 {
+    padding-left: .2em;
+  }
+}
+@media (max-width: 800px) {
+  h4 {
+    margin-top: 0;
+  }
+
+  .no-print {
+    display: none;
+  }
+  
+  body, .root {
+    padding: 1em 0.5em;
+  }
 }
 
 
