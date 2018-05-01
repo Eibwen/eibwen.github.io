@@ -58,12 +58,18 @@ class App extends React.Component<IProps, IState> {
       : this.renderItemsBullets(items);
 
     return (
-      <div className={noPrint ? "no-print" : undefined}>
+      <div key={this.slugifyString(section.title.text)} className={noPrint ? "no-print" : undefined}>
         {this.renderElement(section.title)}
         {itemsElements}
         {this.renderWorkHistory(positions)}
       </div>
     );
+  }
+  private slugifyString(text: string): string {
+    return text.replace(/ /g, '-')
+              .replace(/[^\w-]/g, '')
+              .toLowerCase()
+              .substring(0, 50);
   }
   private renderElement(ele: IDocElement, Parent: string = 'div'): JSX.Element {
     const EleTag = ele.element;
@@ -73,17 +79,14 @@ class App extends React.Component<IProps, IState> {
 
     const wrapInParent = (child: JSX.Element | string) => {
       // const clsName = ele.className ? ele.className + ' ' : '';
-      const slugified = text.replace(/ /g, '-')
-                            .replace(/[^\w-]/g, '')
-                            .toLowerCase()
-                            .substring(0, 50);
+      const slugified = this.slugifyString(text);
       const classArray = [ele.className, slugified];
       if (ele.noPrint) {
         classArray.push("no-print");
       }
 
       return (
-        <Parent className={classArray.filter(x => x).join(" ")}>
+        <Parent id={slugified} key={slugified} className={classArray.filter(x => x).join(" ")}>
           {child}
         </Parent>
       );
@@ -145,7 +148,7 @@ class App extends React.Component<IProps, IState> {
 
     // TODO do I want the company names even larger?
     const workHistoryComponents = history.map(x => (
-      <div>
+      <div key={this.slugifyString(x.name)}>
         <h4>{x.name} {this.buildLocation(x)} {this.buildTenure(x)}</h4>
         <div className='job-position'>{x.position}</div>
         {this.buildJobDescription(x)}
